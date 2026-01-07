@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   target: {fileID: 0}
-  smoothTime: 0.3
+  smoothTime: 0.15
   offset: {x: 0, y: 10, z: -12}
 --- !u!1 &4385140754267481396
 GameObject:
