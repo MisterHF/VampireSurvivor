@@ -1,26 +1,97 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed = 0;
-    private Vector2 move;
+    [Header("Settings")]
+    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float dashSpeed = 15f;
+    [SerializeField] float dashDecaySpeed = 40f;
 
-    public void OnMove(InputAction.CallbackContext context)
+
+    [Header("State")]
+    private Vector2 moveInput;
+    private Vector3 dashVelocity;
+    private bool _dashing;
+
+    private InputSystem_Actions action;
+
+
+    private void Awake()
     {
-        move = context.ReadValue<Vector2>();
+        action = new InputSystem_Actions();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        MovePlayer();
+        action.Player.Enable();
+
+        action.Player.Move.performed += OnMovePerformed;
+        action.Player.Move.canceled += OnMoveCanceled;
     }
 
-    private void MovePlayer()
+    private void OnDisable()
     {
-        Vector3 movement = new Vector3(move.x, 0f,move.y);
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        action.Player.Move.performed -= OnMovePerformed;
+        action.Player.Move.canceled -= OnMoveCanceled;
+
+        action.Player.Disable();
+    }
+
+    private void OnMovePerformed(InputAction.CallbackContext ctx)
+    {
+        moveInput = ctx.ReadValue<Vector2>();
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext ctx)
+    {
+        moveInput = Vector2.zero;
+    }
+
+
+    private void Update()
+    {
+        Move();
+    }
+
+    public void Move()
+    {
+        Vector3 velocity;
+
+        if (_dashing)
+        {
+            dashVelocity = Vector3.MoveTowards(
+                dashVelocity,
+                Vector3.zero,
+                dashDecaySpeed * Time.deltaTime
+            );
+
+            velocity = dashVelocity;
+
+            if (dashVelocity.sqrMagnitude < 0.01f)
+                _dashing = false;
+        }
+        else
+        {
+            velocity = new Vector3(moveInput.x, 0f, moveInput.y) * moveSpeed;
+        }
+
+        if (velocity.sqrMagnitude > 0.001f)
+            transform.forward = velocity.normalized;
+
+        transform.position += velocity * Time.deltaTime;
+    }
+
+    public void OnDash()
+    {
+        if (_dashing) return;
+
+        Vector3 dir = transform.forward;
+
+        if (moveInput.sqrMagnitude > 0.01f)
+            dir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+
+        dashVelocity = dir * dashSpeed;
+        _dashing = true;
     }
 }
