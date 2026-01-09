@@ -48,6 +48,10 @@ public class PlayerMovement : MonoBehaviour
         moveInput = Vector2.zero;
     }
 
+    public Vector2 GetMoveInput()
+    {
+        return moveInput;
+    }
 
     private void Update()
     {
@@ -60,24 +64,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (_dashing)
         {
-            dashVelocity = Vector3.MoveTowards(
-                dashVelocity,
-                Vector3.zero,
-                dashDecaySpeed * Time.deltaTime
-            );
+            dashVelocity = Vector3.MoveTowards(dashVelocity, Vector3.zero, dashDecaySpeed * Time.deltaTime);
 
             velocity = dashVelocity;
 
-            if (dashVelocity.sqrMagnitude < 0.01f)
-                _dashing = false;
+            if (dashVelocity.sqrMagnitude < 0.01f) _dashing = false;
         }
         else
         {
             velocity = new Vector3(moveInput.x, 0f, moveInput.y) * moveSpeed;
         }
-
-        if (velocity.sqrMagnitude > 0.001f)
-            transform.forward = velocity.normalized;
 
         transform.position += velocity * Time.deltaTime;
     }
@@ -88,8 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 dir = transform.forward;
 
-        if (moveInput.sqrMagnitude > 0.01f)
-            dir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+        if (moveInput.sqrMagnitude > 0.01f) dir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
         dashVelocity = dir * dashSpeed;
         _dashing = true;
