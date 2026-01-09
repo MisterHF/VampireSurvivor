@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 845698076420849625}
   - component: {fileID: 3212963277596278113}
+  - component: {fileID: 7856218365458735487}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,6 +49,19 @@ MonoBehaviour:
   moveSpeed: 5
   dashSpeed: 32
   dashDecaySpeed: 48
+--- !u!114 &7856218365458735487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678843182130797226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8a05a27f7108d49adf796debdec2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  health: 100
 --- !u!1 &1944549979086171158
 GameObject:
   m_ObjectHideFlags: 0
