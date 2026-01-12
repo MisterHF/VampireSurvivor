@@ -19,6 +19,7 @@ public class PlayerRotation : MonoBehaviour
         }
     }
 
+    //Rotation via movement & without proximity to an enemy 
     void RotateTowardMovement()
     {
         Vector2 input = movement.GetMoveInput();
@@ -30,6 +31,7 @@ public class PlayerRotation : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation,targetRot, rotationSpeed * Time.deltaTime);
     }
 
+    //Rotation via proximity to an enemy
     void RotateToward(Vector3 worldPos)
     {
         Vector3 dir = worldPos - transform.position;

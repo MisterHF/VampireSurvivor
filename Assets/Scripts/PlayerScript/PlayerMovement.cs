@@ -16,6 +16,11 @@ public class PlayerMovement : MonoBehaviour
 
     private InputSystem_Actions action;
 
+    //Player's layers ignore the enemy when he is sprinting and do not ignore them when he is moving.
+    [Header("Layers")]
+    [SerializeField] string playerLayer = "Player";
+    [SerializeField] string obstacleLayer = "Enemy";
+
 
     private void Awake()
     {
@@ -65,18 +70,21 @@ public class PlayerMovement : MonoBehaviour
         if (_dashing)
         {
             dashVelocity = Vector3.MoveTowards(dashVelocity, Vector3.zero, dashDecaySpeed * Time.deltaTime);
-
             velocity = dashVelocity;
 
-            if (dashVelocity.sqrMagnitude < 0.01f) _dashing = false;
+            if (dashVelocity.sqrMagnitude < 0.01f)
+            {
+                _dashing = false;
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer(playerLayer), LayerMask.NameToLayer(obstacleLayer), false);
+            }
         }
         else
         {
             velocity = new Vector3(moveInput.x, 0f, moveInput.y) * moveSpeed;
         }
-
         transform.position += velocity * Time.deltaTime;
     }
+
 
     public void OnDash()
     {
@@ -88,5 +96,6 @@ public class PlayerMovement : MonoBehaviour
 
         dashVelocity = dir * dashSpeed;
         _dashing = true;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(playerLayer), LayerMask.NameToLayer(obstacleLayer), true);
     }
 }

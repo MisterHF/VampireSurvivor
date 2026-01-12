@@ -20,11 +20,13 @@ public class AIController : MonoBehaviour
 
     private IObjectPool<GameObject> pool;
 
+
     void Start()
     {
         destination = GameObject.FindGameObjectWithTag("Player");
         agent = GetComponent<NavMeshAgent>();
         currentHealth = maxHealth;
+
     }
 
 

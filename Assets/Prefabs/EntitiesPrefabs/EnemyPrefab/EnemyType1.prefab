@@ -153,6 +153,8 @@ MonoBehaviour:
   attackRange: 2
   damage: 10
   attackCooldown: 2.5
+  currentHealth: 0
+  maxHealth: 100
 --- !u!54 &533806120200399504
 Rigidbody:
   m_ObjectHideFlags: 0
