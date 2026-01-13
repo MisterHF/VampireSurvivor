@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6535188783840544755}
   - component: {fileID: 8679736134481133553}
   - component: {fileID: 567267480743668603}
+  - component: {fileID: 788009700309024619}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -265,6 +266,19 @@ MonoBehaviour:
   moveSpeed: 5
   dashSpeed: 32
   dashDecaySpeed: 48
+  dashCooldown: 0
+  capsule: {fileID: 2458576343668199657}
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 64
+  skinWidth: 0.05
+  lockedY: 1
+  enemyCollisionLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerCollisionLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &8679736134481133553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +310,33 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+--- !u!54 &788009700309024619
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3131522426466724401}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5022917058283298947
 GameObject:
   m_ObjectHideFlags: 0
