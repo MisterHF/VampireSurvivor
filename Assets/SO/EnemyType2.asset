@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f81be68cbfea24e8e1544ddfc4e651, type: 3}
   m_Name: EnemyType2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  attackRange: 2
-  damage: 10
-  attackCooldown: 1
-  maxHealth: 100
-  xpAmount: 100
-  xpDropPrefab: {fileID: 0}
+  moveSpeed: 3.5
+  angularSpeed: 120
+  acceleration: 8
+  attackRange: 3
+  damage: 8
+  attackCooldown: 2
+  maxHealth: 250
+  xpAmount: 300
+  xpDropPrefab: {fileID: 1115934242283897644, guid: 8d3bece9930865b42ab1f36e97ed266c, type: 3}
