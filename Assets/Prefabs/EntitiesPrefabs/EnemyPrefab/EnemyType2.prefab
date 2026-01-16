@@ -151,10 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66cf0dd72f1b146449f6557b49da73b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIController
-  attackRange: 2
-  damage: 10
-  attackCooldown: 2.5
-  maxHealth: 100
+  enemyData: {fileID: 11400000, guid: b1e55cdd9766ab44fba5272a03839943, type: 2}
   healthBar: {fileID: 7513076181805301321}
 --- !u!54 &533806120200399504
 Rigidbody:

@@ -17,7 +17,8 @@ GameObject:
   - component: {fileID: 6535188783840544755}
   - component: {fileID: 8679736134481133553}
   - component: {fileID: 567267480743668603}
-  - component: {fileID: 788009700309024619}
+  - component: {fileID: 2306779444370453113}
+  - component: {fileID: 5920303937118143137}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -250,7 +251,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8a05a27f7108d49adf796debdec2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 100
   health: 100
+  healthSlider: {fileID: 0}
 --- !u!114 &6535188783840544755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,12 +276,8 @@ MonoBehaviour:
     m_Bits: 64
   skinWidth: 0.05
   lockedY: 1
-  enemyCollisionLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  playerCollisionLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  enemyCollisionLayer: 7
+  playerCollisionLayer: 8
 --- !u!114 &8679736134481133553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +309,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
---- !u!54 &788009700309024619
+--- !u!54 &2306779444370453113
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -335,8 +334,21 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &5920303937118143137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3131522426466724401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54998c97bfc893845b346e71c3a02885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerXp
+  experienceManager: {fileID: 0}
 --- !u!1 &5022917058283298947
 GameObject:
   m_ObjectHideFlags: 0

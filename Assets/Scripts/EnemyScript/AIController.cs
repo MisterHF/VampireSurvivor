@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
@@ -5,20 +6,17 @@ using UnityEngine.UI;
 
 public class AIController : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] EnemyData enemyData;
+    [SerializeField] Slider healthBar;
+
     GameObject destination;
     NavMeshAgent agent;
 
-    [Header("Attack Settings")]
-    [SerializeField] float attackRange = 2f;
-    [SerializeField] int damage = 10;
-    [SerializeField] float attackCooldown = 1f;
+    private float currentHealth;
+    private float lastAttackTime;
 
-    [Header("Health Settings")]
-    [SerializeField] float maxHealth = 100f;
-    [SerializeField] Slider healthBar;
-
-    float currentHealth;
-    float lastAttackTime;
+    private bool isDead;
 
     IObjectPool<GameObject> pool;
 
@@ -28,13 +26,18 @@ public class AIController : MonoBehaviour
         destination = GameObject.FindGameObjectWithTag("Player");
     }
 
+    void OnEnable()
+    {
+        OnSpawnFromPool();
+    }
+
     void Update()
     {
         if (destination == null) return;
 
         float distance = Vector3.Distance(transform.position, destination.transform.position);
 
-        if (distance > attackRange)
+        if (distance > enemyData.attackRange)
         {
             agent.isStopped = false;
             agent.SetDestination(destination.transform.position);
@@ -45,34 +48,57 @@ public class AIController : MonoBehaviour
             Attack();
         }
 
-        if (Input.GetKeyDown(KeyCode.H)) { TakeDamage(50); }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            TakeDamage(50);
+        }
     }
 
     void Attack()
     {
-        if (Time.time - lastAttackTime < attackCooldown)
+        if (Time.time - lastAttackTime < enemyData.attackCooldown)
             return;
 
         lastAttackTime = Time.time;
-        destination.GetComponent<PlayerHealth>()?.TakeDamage(damage);
+        destination.GetComponent<PlayerHealth>()?.TakeDamage(enemyData.damage);
     }
 
     public void TakeDamage(float amount)
     {
+        if (isDead) return;
+
         currentHealth -= amount;
-        healthBar.value = currentHealth;
+
+        if (healthBar != null)
+            healthBar.value = currentHealth;
 
         if (currentHealth <= 0)
+        {
+            isDead = true;
+            DropXP();
             pool.Release(gameObject);
+        }
     }
+
+
     public void OnSpawnFromPool()
     {
-        currentHealth = maxHealth;
+        if (enemyData == null)
+        {
+            Debug.LogError("EnemyData missing", this);
+            return;
+        }
+
+        isDead = false;
+        currentHealth = enemyData.maxHealth;
+        agent.speed = enemyData.moveSpeed;
+        agent.angularSpeed = enemyData.angularSpeed;
+        agent.acceleration = enemyData.acceleration;
 
         if (healthBar != null)
         {
-            healthBar.maxValue = maxHealth;
-            healthBar.value = maxHealth;
+            healthBar.maxValue = enemyData.maxHealth;
+            healthBar.value = enemyData.maxHealth;
         }
     }
 
@@ -80,5 +106,23 @@ public class AIController : MonoBehaviour
     public void SetPool(IObjectPool<GameObject> pool)
     {
         this.pool = pool;
+    }
+    
+    void DropXP()
+    {
+        if (enemyData.xpDropPrefab == null)
+            return;
+
+        GameObject drop = Instantiate(
+            enemyData.xpDropPrefab,
+            transform.position,
+            Quaternion.identity
+        );
+
+        XPDrop xpDrop = drop.GetComponent<XPDrop>();
+        if (xpDrop != null)
+        {
+            xpDrop.Init(enemyData.xpAmount);
+        }
     }
 }
