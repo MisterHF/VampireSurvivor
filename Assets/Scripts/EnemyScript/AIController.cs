@@ -1,8 +1,8 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
 using UnityEngine.UI;
+using System.Collections;
 
 public class AIController : MonoBehaviour
 {
@@ -15,6 +15,9 @@ public class AIController : MonoBehaviour
 
     private float currentHealth;
     private float lastAttackTime;
+    private Coroutine attackCoroutine;
+    private bool isAttacking;
+    private Transform lockedTarget;
 
     private bool isDead;
 
@@ -33,7 +36,7 @@ public class AIController : MonoBehaviour
 
     void Update()
     {
-        if (destination == null) return;
+        if (destination == null || isDead || isAttacking) { return;}
 
         float distance = Vector3.Distance(transform.position, destination.transform.position);
 
@@ -44,10 +47,9 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            agent.isStopped = true;
             Attack();
         }
-
+        
         if (Input.GetKeyDown(KeyCode.H))
         {
             TakeDamage(50);
@@ -56,30 +58,35 @@ public class AIController : MonoBehaviour
 
     void Attack()
     {
-        if (Time.time - lastAttackTime < enemyData.attackCooldown)
-            return;
+        if (isAttacking || Time.time - lastAttackTime < enemyData.attackCooldown) { return;}
 
-        lastAttackTime = Time.time;
-        destination.GetComponent<PlayerHealth>()?.TakeDamage(enemyData.damage);
+        attackCoroutine = StartCoroutine(AttackRoutine());
     }
 
     public void TakeDamage(float amount)
     {
-        if (isDead) return;
+        if (isDead) { return;}
 
         currentHealth -= amount;
 
         if (healthBar != null)
+        {
             healthBar.value = currentHealth;
+        }
 
         if (currentHealth <= 0)
         {
             isDead = true;
+            
+            if (attackCoroutine != null)
+            {
+                StopCoroutine(attackCoroutine);
+            }
+
             DropXP();
             pool.Release(gameObject);
         }
     }
-
 
     public void OnSpawnFromPool()
     {
@@ -90,6 +97,7 @@ public class AIController : MonoBehaviour
         }
 
         isDead = false;
+        isAttacking = false;
         currentHealth = enemyData.maxHealth;
         agent.speed = enemyData.moveSpeed;
         agent.angularSpeed = enemyData.angularSpeed;
@@ -102,27 +110,42 @@ public class AIController : MonoBehaviour
         }
     }
 
-
     public void SetPool(IObjectPool<GameObject> pool)
     {
         this.pool = pool;
     }
-    
+
     void DropXP()
     {
-        if (enemyData.xpDropPrefab == null)
+        if (XpSpawner.Instance == null)
             return;
 
-        GameObject drop = Instantiate(
-            enemyData.xpDropPrefab,
-            transform.position,
-            Quaternion.identity
-        );
+        XpSpawner.Instance.SpawnXp(transform.position);
+    }
 
-        XPDrop xpDrop = drop.GetComponent<XPDrop>();
-        if (xpDrop != null)
+    IEnumerator AttackRoutine()
+    {
+        isAttacking = true;
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+        lockedTarget = destination.transform;
+
+        float startTime = Time.time;
+
+        while (Time.time - startTime < enemyData.attackWindUp)
         {
-            xpDrop.Init(enemyData.xpAmount);
+            yield return null;
         }
+        
+        if (!isDead && lockedTarget != null)
+        {
+            float distance = Vector3.Distance(transform.position, lockedTarget.position);
+            if (distance <= enemyData.attackRange)
+            {
+                lockedTarget.GetComponent<PlayerHealth>()?.TakeDamage(enemyData.damage);
+                lastAttackTime = Time.time;
+            }
+        }
+        isAttacking = false;
     }
 }

@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class PlayerXp : MonoBehaviour
 {
     ExperienceManager experienceManager;
+    
+    IObjectPool<GameObject>[] xpPools;
 
     void Awake()
     {

@@ -13,14 +13,11 @@ public class EnemyData : ScriptableObject
     public float attackRange = 2f;
     public int damage = 10;
     public float attackCooldown = 1f;
+    public float attackWindUp = 0.25f;
 
     [Header("Health Settings")]
     public float maxHealth = 100f;
 
     [Header("Xp Settings")]
     public int xpAmount = 100;
-
-    [Header("Drops")]
-    public GameObject xpDropPrefab;
-
 }
