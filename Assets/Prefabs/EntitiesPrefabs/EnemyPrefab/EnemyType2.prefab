@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2340752908690848815}
   - component: {fileID: 2437468918922003858}
   - component: {fileID: 533806120200399504}
+  - component: {fileID: 265597278471158998}
   m_Layer: 7
   m_Name: EnemyType2
   m_TagString: Enemy
@@ -153,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AIController
   enemyData: {fileID: 11400000, guid: b1e55cdd9766ab44fba5272a03839943, type: 2}
   healthBar: {fileID: 7513076181805301321}
+  attackFillBar: {fileID: 265597278471158998}
 --- !u!54 &533806120200399504
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -180,6 +182,18 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &265597278471158998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631804590141963297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f569dc2b672e7847bc077a23b2a7d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShaderGraphProgressBar
 --- !u!1 &3766558444473357642
 GameObject:
   m_ObjectHideFlags: 0

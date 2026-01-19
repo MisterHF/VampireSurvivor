@@ -7,11 +7,12 @@ using System.Collections;
 public class AIController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] EnemyData enemyData;
-    [SerializeField] Slider healthBar;
+    [SerializeField] private EnemyData enemyData;
+    [SerializeField] private Slider healthBar;
+    [SerializeField] private ShaderGraphProgressBar attackFillBar;
 
-    GameObject destination;
-    NavMeshAgent agent;
+    private GameObject destination;
+    private NavMeshAgent agent;
 
     private float currentHealth;
     private float lastAttackTime;
@@ -29,10 +30,6 @@ public class AIController : MonoBehaviour
         destination = GameObject.FindGameObjectWithTag("Player");
     }
 
-    void OnEnable()
-    {
-        OnSpawnFromPool();
-    }
 
     void Update()
     {
@@ -90,18 +87,18 @@ public class AIController : MonoBehaviour
 
     public void OnSpawnFromPool()
     {
-        if (enemyData == null)
-        {
-            Debug.LogError("EnemyData missing", this);
-            return;
-        }
+        if (enemyData == null) { return; }
 
         isDead = false;
         isAttacking = false;
         currentHealth = enemyData.maxHealth;
+
         agent.speed = enemyData.moveSpeed;
         agent.angularSpeed = enemyData.angularSpeed;
         agent.acceleration = enemyData.acceleration;
+
+        if (attackFillBar != null)
+            attackFillBar.SetFill(-1f);
 
         if (healthBar != null)
         {
@@ -109,6 +106,7 @@ public class AIController : MonoBehaviour
             healthBar.value = enemyData.maxHealth;
         }
     }
+
 
     public void SetPool(IObjectPool<GameObject> pool)
     {
@@ -130,22 +128,41 @@ public class AIController : MonoBehaviour
         agent.velocity = Vector3.zero;
         lockedTarget = destination.transform;
 
-        float startTime = Time.time;
+        float elapsed = 0f;
 
-        while (Time.time - startTime < enemyData.attackWindUp)
+        while (elapsed < enemyData.attackWindUp)
         {
+            if (isDead)
+            {
+                attackFillBar?.SetFill(-1f);
+                isAttacking = false;
+                yield break;
+            }
+
+            elapsed += Time.deltaTime;
+            float normalized = elapsed / enemyData.attackWindUp;
+
+            float shaderValue = Mathf.Lerp(-1f, 1f, normalized);
+            attackFillBar?.SetFill(shaderValue);
+
             yield return null;
         }
-        
+
         if (!isDead && lockedTarget != null)
         {
             float distance = Vector3.Distance(transform.position, lockedTarget.position);
             if (distance <= enemyData.attackRange)
             {
-                lockedTarget.GetComponent<PlayerHealth>()?.TakeDamage(enemyData.damage);
+                lockedTarget.GetComponent<PlayerHealth>()
+                    ?.TakeDamage(enemyData.damage);
+
                 lastAttackTime = Time.time;
             }
         }
+
+        attackFillBar?.SetFill(-1f);
+
         isAttacking = false;
     }
+
 }

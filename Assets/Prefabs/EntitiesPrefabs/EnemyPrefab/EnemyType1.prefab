@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2340752908690848815}
   - component: {fileID: 2437468918922003858}
   - component: {fileID: 533806120200399504}
+  - component: {fileID: -7054043553207850305}
   m_Layer: 7
   m_Name: EnemyType1
   m_TagString: Enemy
@@ -71,7 +72,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4f6862414e402944aa32a80d84091bcf, type: 2}
+  - {fileID: 2100000, guid: f31f573b72ea61d48b84f6c511aaf214, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AIController
   enemyData: {fileID: 11400000, guid: 82ac42c49cc57cc4397d1759ac091f17, type: 2}
   healthBar: {fileID: 804587989109510033}
+  attackFillBar: {fileID: -7054043553207850305}
 --- !u!54 &533806120200399504
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -180,6 +182,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &-7054043553207850305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631804590141963297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f569dc2b672e7847bc077a23b2a7d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShaderGraphProgressBar
+  objectMaterial: {fileID: 2100000, guid: f31f573b72ea61d48b84f6c511aaf214, type: 2}
 --- !u!1 &5722813582626214142
 GameObject:
   m_ObjectHideFlags: 0

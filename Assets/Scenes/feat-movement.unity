@@ -574,7 +574,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &709440457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,7 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f569dc2b672e7847bc077a23b2a7d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressFillShader
-  progressSteps: 10
+  objectMaterial: {fileID: -876546973899608171, guid: 9614d88af15d91c458d813b8a47d669c, type: 3}
 --- !u!136 &709440458
 CapsuleCollider:
   m_ObjectHideFlags: 0
