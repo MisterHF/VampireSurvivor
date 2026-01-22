@@ -118,7 +118,7 @@ public class AIController : MonoBehaviour
         if (XpSpawner.Instance == null)
             return;
 
-        XpSpawner.Instance.SpawnXp(transform.position);
+        XpSpawner.Instance.SpawnXp(transform.position, enemyData.xpAmount);
     }
 
     IEnumerator AttackRoutine()

@@ -14,6 +14,9 @@ public class ExperienceManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] Slider experienceSlider;
 
+    [Header("Références")]
+    [SerializeField] private LevelUpManager levelUpManager;
+
     void Start()
     {
         UpdateLevel();
@@ -36,10 +39,11 @@ public class ExperienceManager : MonoBehaviour
 
     void CheckForLevelUp()
     {
-        if (totalExperience >= nextLevelsExperience)
+        while (totalExperience >= nextLevelsExperience)
         {
             currentLevel++;
             UpdateLevel();
+            levelUpManager.OpenLevelUp();
         }
     }
 

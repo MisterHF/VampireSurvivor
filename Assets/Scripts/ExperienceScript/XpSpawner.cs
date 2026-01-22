@@ -38,9 +38,10 @@ public class XpSpawner : MonoBehaviour
         xp.SetActive(false);
     }
 
-    public void SpawnXp(Vector3 position)
+    public void SpawnXp(Vector3 position, int xpAmount)
     {
         GameObject xp = xpPool.Get();
         xp.transform.position = position;
+        xp.GetComponent<XpDrop>().Init(xpAmount);
     }
 }

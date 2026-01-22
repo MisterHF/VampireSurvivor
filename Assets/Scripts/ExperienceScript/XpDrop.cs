@@ -4,10 +4,14 @@ using UnityEngine.Pool;
 [RequireComponent(typeof(Collider))]
 public class XpDrop : MonoBehaviour
 {
-    [SerializeField] int xpValue = 1;
+    int xpValue;
 
     IObjectPool<GameObject> pool;
 
+    public void Init(int amount)
+    {
+        xpValue = amount;
+    }
     public void SetPool(IObjectPool<GameObject> pool)
     {
         this.pool = pool;
